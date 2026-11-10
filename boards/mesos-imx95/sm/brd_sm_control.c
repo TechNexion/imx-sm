@@ -44,10 +44,27 @@
 
 /* Local defines */
 
+/* Must match the OEI board handoff address. */
+#define BOARD_OEI_HW_INFO_ADDR  0x204C0000UL
+
 
 /* Local types */
 
 /* Local variables */
+
+/* SM-private storage survives an AP logical-machine reset. */
+static uint32_t s_hwInfo;
+static bool s_hwInfoValid = false;
+
+void BRD_SM_HwInfoInit(void)
+{
+    if (!s_hwInfoValid)
+    {
+        s_hwInfo = *((volatile const uint32_t *) BOARD_OEI_HW_INFO_ADDR);
+        s_hwInfoValid = true;
+    }
+}
+
 
 /*--------------------------------------------------------------------------*/
 /* Set a control value                                                      */
@@ -97,8 +114,17 @@ int32_t BRD_SM_ControlGet(uint32_t ctrlId, uint32_t *numRtn, uint32_t *rtn)
         {
             status = DEV_SM_ControlGet(ctrlId, numRtn, rtn);
         }
-        else if (ctrlId < BRD_SM_CTRL_TEST)
+        else if (ctrlId == BRD_SM_CTRL_HW_INFO)
         {
+            if (s_hwInfoValid)
+            {
+                rtn[0] = s_hwInfo;
+                *numRtn = 1U;
+            }
+            else
+            {
+                status = SM_ERR_NOT_SUPPORTED;
+            }
         }
         else
         {

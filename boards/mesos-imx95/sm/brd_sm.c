@@ -137,6 +137,9 @@ int32_t BRD_SM_Init(int argc, const char * const argv[], uint32_t *mSel)
     uint32_t flags;
     uint64_t usec;
 
+    /* OEI has completed; save its handoff before the AP can reuse OCRAM. */
+    BRD_SM_HwInfoInit();
+
     /* Init board hardware */
     TIME_START(usec);
     BOARD_InitHardware();

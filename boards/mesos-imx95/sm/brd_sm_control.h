@@ -67,7 +67,7 @@
 /** @} */
 
 /*! Number of board controls */
-#define BRD_SM_NUM_CTRL  2UL
+#define BRD_SM_NUM_CTRL  3UL
 
 /*! Total number of controls */
 #define SM_NUM_CTRL  (DEV_SM_NUM_CTRL + BRD_SM_NUM_CTRL)
@@ -79,11 +79,15 @@
 
 #define BRD_SM_CTRL_TEST        (DEV_SM_NUM_CTRL + 0U)  /*!< Test */
 #define BRD_SM_CTRL_TEST_A      (DEV_SM_NUM_CTRL + 1U)  /*!< Test action */
+#define BRD_SM_CTRL_HW_INFO     (DEV_SM_NUM_CTRL + 2U)  /*!< OEI board/DDR code */
 /** @} */
 
 /* Types */
 
 /* Functions */
+
+/*! Capture the OEI handoff once, before starting the application cores. */
+void BRD_SM_HwInfoInit(void);
 
 /*!
  * @name Board control functions
